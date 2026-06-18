@@ -16,7 +16,14 @@ python -m http.server 8000
 http://localhost:8000/
 ```
 
-## 배포
+## Streamlib / Streamlit 배포
 
-GitHub 저장소에 이 폴더 전체를 업로드한 뒤 Streamlib에서 해당 저장소를 연결하세요.
+Streamlib에서 GitHub 저장소를 연결한 뒤 아래 값을 사용하세요.
 
+```text
+Main file path: streamlit_app.py
+Requirements file: requirements.txt
+Branch: main
+```
+
+`index.html`은 정적 웹앱 파일이므로 Main file path에 직접 넣지 않습니다.
