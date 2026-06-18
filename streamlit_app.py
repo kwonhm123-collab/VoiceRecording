@@ -15,6 +15,8 @@ def prepare_static_site() -> None:
 
     files = [
         "mobile.css",
+        "upload-addon.css",
+        "upload-addon.js",
         "favicon.svg",
         "icons.svg",
         "coi-serviceworker.js",
