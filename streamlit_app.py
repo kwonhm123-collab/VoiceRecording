@@ -14,6 +14,7 @@ def prepare_static_site() -> None:
     STATIC_DIR.mkdir(exist_ok=True)
 
     files = [
+        "mobile.css",
         "favicon.svg",
         "icons.svg",
         "coi-serviceworker.js",

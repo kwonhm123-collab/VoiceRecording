@@ -1,0 +1,365 @@
+@media (max-width: 720px) {
+  html {
+    font-size: 15px;
+  }
+
+  body,
+  #root,
+  .app-layout {
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+
+  body {
+    overflow: hidden;
+  }
+
+  .app-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+    overflow: visible;
+  }
+
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-bottom: 0;
+  }
+
+  .sidebar-logo {
+    margin: 0;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .sidebar-logo-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+  }
+
+  .sidebar-logo-text {
+    font-size: 1rem;
+    white-space: nowrap;
+  }
+
+  .new-meeting-btn {
+    width: auto;
+    min-height: 38px;
+    padding: 9px 12px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-search,
+  .sidebar-list {
+    display: none;
+  }
+
+  .sidebar-footer {
+    padding: 0 12px 10px;
+    border: 0;
+  }
+
+  .settings-btn {
+    width: 100%;
+    height: 38px;
+    padding: 0 12px;
+    justify-content: center;
+    background: var(--bg-card);
+    font-size: .8rem;
+  }
+
+  .settings-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .main-content {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .page-header {
+    padding: 18px 16px 14px;
+  }
+
+  .page-title {
+    font-size: 1.25rem;
+  }
+
+  .page-subtitle {
+    font-size: .82rem;
+  }
+
+  .meeting-grid {
+    grid-template-columns: 1fr;
+    padding: 0 14px 18px;
+    gap: 12px;
+  }
+
+  .meeting-grid-card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .meeting-grid-card-meta {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .empty-state {
+    padding: 28px 18px;
+  }
+
+  .empty-state-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 16px;
+  }
+
+  .recording-header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 14px 16px;
+    gap: 10px;
+  }
+
+  .recording-title-input {
+    width: 100%;
+    margin-right: 0;
+    font-size: 1rem;
+  }
+
+  .recording-meta {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .recording-timer {
+    font-size: .8rem;
+    padding: 5px 10px;
+  }
+
+  .audio-wave {
+    height: 34px;
+    padding: 6px 16px;
+  }
+
+  .transcript-feed {
+    padding: 12px 14px;
+  }
+
+  .transcript-entry {
+    gap: 8px;
+  }
+
+  .entry-timestamp {
+    width: 42px;
+    font-size: .66rem;
+  }
+
+  .entry-bubble {
+    padding: 10px 12px;
+  }
+
+  .entry-actions {
+    opacity: 1;
+    position: static;
+    margin-top: 8px;
+  }
+
+  .recording-controls {
+    padding: 12px 14px 16px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .ctrl-btn {
+    min-height: 42px;
+    padding: 10px 16px;
+    justify-content: center;
+  }
+
+  .ctrl-btn-record,
+  .ctrl-btn-finish,
+  .ctrl-btn-stop {
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .model-loader {
+    padding: 22px 16px;
+  }
+
+  .summary-header {
+    padding: 12px 14px;
+    align-items: flex-start;
+  }
+
+  .summary-header-left {
+    width: 100%;
+    flex-basis: 100%;
+  }
+
+  .summary-header-left > div > div:first-child {
+    max-width: calc(100vw - 78px);
+  }
+
+  .summary-header-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 44px;
+    gap: 8px;
+  }
+
+  .icon-btn {
+    min-height: 38px;
+    justify-content: center;
+    padding: 7px 10px;
+  }
+
+  .summary-body {
+    padding: 14px;
+    gap: 12px;
+  }
+
+  .summary-section {
+    border-radius: 12px;
+  }
+
+  .summary-section-header {
+    padding: 12px 14px;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .summary-section-body,
+  .transcript-full {
+    padding: 14px;
+  }
+
+  .summary-item {
+    font-size: .84rem;
+  }
+
+  .action-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .transcript-full-entry {
+    gap: 8px;
+    font-size: .8rem;
+  }
+
+  .modal-overlay {
+    align-items: flex-end;
+  }
+
+  .modal {
+    width: 100%;
+    max-width: none;
+    max-height: 92dvh;
+    border-radius: 18px 18px 0 0;
+  }
+
+  .modal-header {
+    padding: 16px 18px 12px;
+  }
+
+  .modal-body {
+    padding: 16px 18px;
+    gap: 16px;
+  }
+
+  .modal-footer {
+    padding: 14px 18px;
+    gap: 8px;
+  }
+
+  .modal-footer .btn {
+    flex: 1;
+  }
+
+  .toast-container {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .toast {
+    max-width: none;
+    width: 100%;
+  }
+
+  .onboarding-page {
+    padding: 18px;
+  }
+
+  .onboarding-card {
+    padding: 24px 18px;
+    border-radius: 16px;
+  }
+}
+
+@media (max-width: 420px) {
+  .sidebar-header {
+    padding: 9px 10px;
+  }
+
+  .sidebar-logo-text {
+    font-size: .95rem;
+  }
+
+  .new-meeting-btn {
+    font-size: .78rem;
+    padding: 8px 10px;
+  }
+
+  .settings-btn {
+    height: 36px;
+  }
+
+  .page-header {
+    padding: 16px 14px 12px;
+  }
+
+  .recording-meta {
+    flex-wrap: wrap;
+  }
+
+  .recording-controls {
+    flex-direction: column;
+  }
+
+  .ctrl-btn-record,
+  .ctrl-btn-finish,
+  .ctrl-btn-stop {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .summary-header-actions {
+    grid-template-columns: 1fr 1fr 40px;
+  }
+
+  .icon-btn {
+    font-size: .76rem;
+  }
+
+  .alert-banner {
+    margin: 0 14px 10px;
+    padding: 10px 12px;
+  }
+}
