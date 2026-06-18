@@ -1,28 +1,37 @@
 .upload-addon-btn {
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
-  z-index: 9000;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 46px;
-  padding: 0 18px;
+  min-height: 40px;
+  padding: 0 14px;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--radius-md, 10px);
   background: linear-gradient(135deg, #10b981, #22c55e);
   color: #fff;
   font-family: var(--font-sans, sans-serif);
-  font-size: .88rem;
+  font-size: .82rem;
   font-weight: 700;
-  box-shadow: 0 8px 28px rgba(16, 185, 129, .32);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, .28);
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .upload-addon-btn:disabled {
   cursor: wait;
   opacity: .72;
+}
+
+.meeting-action-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+}
+
+.meeting-action-row .new-meeting-btn,
+.meeting-action-row .upload-addon-btn {
+  width: 100%;
 }
 
 .upload-addon-overlay {
@@ -170,11 +179,13 @@
 
 @media (max-width: 720px) {
   .upload-addon-btn {
-    right: 14px;
-    bottom: 14px;
-    min-height: 42px;
-    padding: 0 14px;
-    font-size: .82rem;
+    min-height: 38px;
+    padding: 0 10px;
+    font-size: .78rem;
+  }
+
+  .meeting-action-row {
+    grid-template-columns: 1fr;
   }
 
   .upload-addon-overlay {

@@ -15,6 +15,27 @@
     summary: null,
     fileName: "",
   };
+  const pendingDeleteKeys = new Set();
+
+  if (window.IDBObjectStore?.prototype?.delete) {
+    const originalIdbDelete = window.IDBObjectStore.prototype.delete;
+    window.IDBObjectStore.prototype.delete = function patchedIdbDelete(key) {
+      if (this.name === "meetings" && key != null) {
+        pendingDeleteKeys.add(String(key));
+      }
+      return originalIdbDelete.call(this, key);
+    };
+  }
+
+  const originalConfirm = window.confirm.bind(window);
+  window.confirm = function patchedConfirm(message) {
+    const result = originalConfirm(message);
+    if (result && typeof message === "string" && message.includes("회의록을 삭제할까요")) {
+      const title = message.match(/"(.+?)"/)?.[1] || getVisibleMeetingTitle();
+      setTimeout(() => purgeDeletedMeeting(title), 300);
+    }
+    return result;
+  };
 
   function el(tag, className, text) {
     const node = document.createElement(tag);
@@ -41,6 +62,80 @@
     document.querySelectorAll("[data-upload-addon-busy]").forEach((node) => {
       node.disabled = busy;
     });
+  }
+
+  function getVisibleMeetingTitle() {
+    const titleNode = document.querySelector(".summary-header-left > div > div:first-child");
+    return (titleNode?.textContent || "").trim();
+  }
+
+  function requestToPromise(request) {
+    return new Promise((resolve, reject) => {
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  function transactionDone(transaction) {
+    return new Promise((resolve, reject) => {
+      transaction.oncomplete = () => resolve();
+      transaction.onerror = () => reject(transaction.error);
+      transaction.onabort = () => reject(transaction.error);
+    });
+  }
+
+  async function deleteMatchingRecords(dbName, title, keys) {
+    const db = await requestToPromise(indexedDB.open(dbName));
+    try {
+      const storeNames = Array.from(db.objectStoreNames).filter((name) => name === "meetings");
+      if (!storeNames.length || !title) return 0;
+
+      let deleted = 0;
+      const transaction = db.transaction(storeNames, "readwrite");
+      for (const storeName of storeNames) {
+        const store = transaction.objectStore(storeName);
+        const cursorRequest = store.openCursor();
+        cursorRequest.onsuccess = () => {
+          const cursor = cursorRequest.result;
+          if (!cursor) return;
+          const value = cursor.value || {};
+          const valueId = value.id == null ? "" : String(value.id);
+          const cursorKey = cursor.key == null ? "" : String(cursor.key);
+          if (value.title === title || valueId === title || keys.has(valueId) || keys.has(cursorKey)) {
+            cursor.delete();
+            deleted += 1;
+          }
+          cursor.continue();
+        };
+      }
+      await transactionDone(transaction);
+      return deleted;
+    } finally {
+      db.close();
+    }
+  }
+
+  async function purgeDeletedMeeting(title) {
+    if (!window.indexedDB) return;
+    const keys = new Set(pendingDeleteKeys);
+    pendingDeleteKeys.clear();
+    if (!title && keys.size === 0) return;
+    try {
+      if (typeof indexedDB.databases === "function") {
+        const databases = await indexedDB.databases();
+        await Promise.all(
+          databases
+            .map((db) => db.name)
+            .filter(Boolean)
+            .map((dbName) => deleteMatchingRecords(dbName, title, keys))
+        );
+      } else {
+        await deleteMatchingRecords("MeetNoteDB", title, keys).catch(() => {});
+        await deleteMatchingRecords("meetnote", title, keys).catch(() => {});
+      }
+    } catch (error) {
+      console.warn("Failed to purge deleted meeting", error);
+    }
   }
 
   function createWorker() {
@@ -363,6 +458,26 @@ ${transcript}`;
       document.getElementById("upload-addon-overlay")?.classList.add("open");
     });
     document.body.append(button);
+    placeUploadButton();
+    const observer = new MutationObserver(placeUploadButton);
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  function placeUploadButton() {
+    const button = document.getElementById("upload-addon-open");
+    const newMeetingButton = document.querySelector(".new-meeting-btn");
+    if (!button || !newMeetingButton) return;
+
+    let row = document.querySelector(".meeting-action-row");
+    if (!row) {
+      row = document.createElement("div");
+      row.className = "meeting-action-row";
+      newMeetingButton.parentNode.insertBefore(row, newMeetingButton);
+      row.appendChild(newMeetingButton);
+    }
+    if (button.parentElement !== row) {
+      row.appendChild(button);
+    }
   }
 
   if (document.readyState === "loading") {
