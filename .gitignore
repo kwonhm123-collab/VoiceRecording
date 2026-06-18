@@ -13,3 +13,6 @@ yarn-error.log*
 # Python
 __pycache__/
 *.py[cod]
+
+# Streamlit secrets
+.streamlit/secrets.toml

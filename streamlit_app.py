@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 import shutil
 
 import streamlit as st
@@ -13,7 +14,6 @@ def prepare_static_site() -> None:
     STATIC_DIR.mkdir(exist_ok=True)
 
     files = [
-        "index.html",
         "favicon.svg",
         "icons.svg",
         "coi-serviceworker.js",
@@ -25,10 +25,31 @@ def prepare_static_site() -> None:
         if source.exists():
             shutil.copy2(source, target)
 
+    source_index = ROOT / "index.html"
+    target_index = STATIC_DIR / "index.html"
+    if source_index.exists():
+        index_html = source_index.read_text(encoding="utf-8")
+        gemini_api_key = get_secret("GEMINI_API_KEY") or get_secret("gemini_api_key")
+        if gemini_api_key:
+            secret_bootstrap = f"""
+    <script>
+      localStorage.setItem("geminiApiKey", {json.dumps(gemini_api_key)});
+    </script>"""
+            index_html = index_html.replace("</head>", f"{secret_bootstrap}\n  </head>")
+        target_index.write_text(index_html, encoding="utf-8")
+
     source_assets = ROOT / "assets"
     target_assets = STATIC_DIR / "assets"
     if source_assets.exists():
         shutil.copytree(source_assets, target_assets, dirs_exist_ok=True)
+
+
+def get_secret(name: str) -> str:
+    try:
+        value = st.secrets.get(name, "")
+    except FileNotFoundError:
+        return ""
+    return str(value).strip()
 
 
 st.set_page_config(

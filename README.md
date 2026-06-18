@@ -27,3 +27,13 @@ Branch: main
 ```
 
 `index.html`은 정적 웹앱 파일이므로 Main file path에 직접 넣지 않습니다.
+
+### Secrets
+
+Streamlib App settings의 Secrets에는 아래 형식으로 Gemini API 키를 등록하세요.
+
+```toml
+GEMINI_API_KEY = "AIza..."
+```
+
+이 값은 배포된 앱 실행 시 브라우저 앱의 `localStorage`에 자동으로 설정됩니다.
